@@ -14,3 +14,7 @@ private val notes = database.getCollection<Note>()
 suspend fun registerUser(user: User): Boolean {
     return users.insertOne(user).wasAcknowledged()
 }
+
+suspend fun checkIfUserExists(email: String): Boolean {
+    return users.findOne(User::email eq email) != null
+}
