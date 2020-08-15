@@ -1,5 +1,6 @@
 package com.androiddevs
 
+import com.androiddevs.routes.loginRoute
 import com.androiddevs.routes.registerRoute
 import io.ktor.application.Application
 import io.ktor.application.install
@@ -18,6 +19,7 @@ fun Application.module(testing: Boolean = false) {
     install(CallLogging)
     install(Routing) {
         registerRoute()
+        loginRoute()
     }
     install(ContentNegotiation) {
         gson {
