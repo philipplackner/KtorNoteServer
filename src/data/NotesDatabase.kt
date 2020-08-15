@@ -2,6 +2,7 @@ package com.androiddevs.data
 
 import com.androiddevs.data.collections.Note
 import com.androiddevs.data.collections.User
+import org.litote.kmongo.MongoOperator
 import org.litote.kmongo.contains
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
@@ -37,6 +38,16 @@ suspend fun saveNote(note: Note): Boolean {
     } else {
         notes.insertOne(note).wasAcknowledged()
     }
+}
+
+suspend fun isOwnerOfNote(noteID: String, owner: String): Boolean {
+    val note = notes.findOneById(noteID) ?: return false
+    return owner in note.owners
+}
+
+suspend fun addOwnerToNote(noteID: String, owner: String): Boolean {
+    val owners = notes.findOneById(noteID)?.owners ?: return false
+    return notes.updateOneById(noteID, setValue(Note::owners, owners + owner)).wasAcknowledged()
 }
 
 suspend fun deleteNoteForUser(email: String, noteID: String): Boolean {
