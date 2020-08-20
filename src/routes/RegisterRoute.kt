@@ -5,6 +5,7 @@ import com.androiddevs.data.collections.User
 import com.androiddevs.data.registerUser
 import com.androiddevs.data.requests.AccountRequest
 import com.androiddevs.data.responses.SimpleResponse
+import com.androiddevs.security.getHashWithSalt
 import io.ktor.application.call
 import io.ktor.features.ContentTransformationException
 import io.ktor.http.HttpStatusCode
@@ -27,7 +28,7 @@ fun Route.registerRoute() {
             }
             val userExists = checkIfUserExists(request.email)
             if(!userExists) {
-                if(registerUser(User(request.email, request.password))) {
+                if(registerUser(User(request.email, getHashWithSalt(request.password)))) {
                     call.respond(OK, SimpleResponse(true, "Successfully created account!"))
                 } else {
                     call.respond(OK, SimpleResponse(false, "An unknown error occured"))
