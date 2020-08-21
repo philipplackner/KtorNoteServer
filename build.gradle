@@ -15,6 +15,20 @@ group 'com.androiddevs'
 version '0.0.1'
 mainClassName = "io.ktor.server.netty.EngineMain"
 
+jar {
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    manifest {
+        attributes(
+                'Implementation-Title': 'Ktor Server',
+                "Main-Class": mainClassName
+        )
+    }
+    destinationDirectory = file("$rootDir/release")
+    archivesBaseName = 'app'
+}
+
 sourceSets {
     main.kotlin.srcDirs = main.java.srcDirs = ['src']
     test.kotlin.srcDirs = test.java.srcDirs = ['test']
