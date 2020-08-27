@@ -10,6 +10,7 @@ import io.ktor.auth.UserIdPrincipal
 import io.ktor.auth.authenticate
 import io.ktor.auth.principal
 import io.ktor.features.ContentTransformationException
+import io.ktor.html.respondHtml
 import io.ktor.http.HttpStatusCode.Companion.BadRequest
 import io.ktor.http.HttpStatusCode.Companion.Conflict
 import io.ktor.http.HttpStatusCode.Companion.OK
@@ -19,8 +20,35 @@ import io.ktor.routing.Route
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.route
+import kotlinx.html.*
 
 fun Route.noteRoutes() {
+    route("/notes") {
+        authenticate {
+            get {
+                val allNotes = getAllNotes()
+                call.respondHtml {
+                    head {
+                        styleLink("/static/css/styles.css")
+                    }
+                    body {
+                        h1 {
+                            +"All Notes"
+                        }
+                        for(note in allNotes) {
+                            h3 {
+                                +"${note.title} (Belongs to ${note.owners}):"
+                            }
+                            p {
+                                +note.content
+                            }
+                            br
+                        }
+                    }
+                }
+            }
+        }
+    }
     route("/getNotes") {
         authenticate {
             get {

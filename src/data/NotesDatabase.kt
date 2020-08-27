@@ -28,6 +28,10 @@ suspend fun checkPasswordForEmail(email: String, passwordToCheck: String): Boole
     return checkHashForPassword(passwordToCheck, actualPassword)
 }
 
+suspend fun getAllNotes(): List<Note> {
+    return notes.find().toList()
+}
+
 suspend fun getNotesForUser(email: String): List<Note> {
     return notes.find(Note::owners contains email).toList()
 }
