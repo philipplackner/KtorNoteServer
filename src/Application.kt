@@ -5,19 +5,16 @@ import com.androiddevs.routes.loginRoute
 import com.androiddevs.routes.noteRoutes
 import com.androiddevs.routes.registerRoute
 import com.androiddevs.routes.styleRoute
-import io.ktor.application.Application
-import io.ktor.application.ApplicationCall
-import io.ktor.application.install
+import io.ktor.application.*
 import io.ktor.auth.Authentication
 import io.ktor.auth.UserIdPrincipal
 import io.ktor.auth.basic
-import io.ktor.features.CallLogging
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.DefaultHeaders
+import io.ktor.client.*
+import io.ktor.features.*
 import io.ktor.gson.gson
-import io.ktor.http.ContentType
+import io.ktor.http.*
 import io.ktor.response.respondText
-import io.ktor.routing.Routing
+import io.ktor.routing.*
 import kotlinx.css.CSSBuilder
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
@@ -27,6 +24,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 fun Application.module(testing: Boolean = false) {
     install(DefaultHeaders)
     install(CallLogging)
+
     install(ContentNegotiation) {
         gson {
             setPrettyPrinting()

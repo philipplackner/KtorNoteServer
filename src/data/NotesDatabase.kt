@@ -3,7 +3,8 @@ package com.androiddevs.data
 import com.androiddevs.data.collections.Note
 import com.androiddevs.data.collections.User
 import com.androiddevs.security.checkHashForPassword
-import org.litote.kmongo.MongoOperator
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.toList
 import org.litote.kmongo.contains
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
@@ -29,11 +30,15 @@ suspend fun checkPasswordForEmail(email: String, passwordToCheck: String): Boole
 }
 
 suspend fun getAllNotes(): List<Note> {
-    return notes.find().toList()
+    return notes.find().toFlow().toList()
 }
 
 suspend fun getNotesForUser(email: String): List<Note> {
-    return notes.find(Note::owners contains email).toList()
+    val list = mutableListOf<Note>()
+    notes.find(Note::owners contains email).toFlow().collect {
+        list.add(it)
+    }
+    return list
 }
 
 suspend fun saveNote(note: Note): Boolean {
