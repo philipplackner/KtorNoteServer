@@ -4,7 +4,6 @@ import com.androiddevs.data.checkPasswordForEmail
 import com.androiddevs.routes.loginRoute
 import com.androiddevs.routes.noteRoutes
 import com.androiddevs.routes.registerRoute
-import com.androiddevs.routes.styleRoute
 import io.ktor.application.*
 import io.ktor.auth.Authentication
 import io.ktor.auth.UserIdPrincipal
@@ -15,7 +14,6 @@ import io.ktor.gson.gson
 import io.ktor.http.*
 import io.ktor.response.respondText
 import io.ktor.routing.*
-import kotlinx.css.CSSBuilder
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -34,15 +32,10 @@ fun Application.module(testing: Boolean = false) {
         configureAuth()
     }
     install(Routing) {
-        styleRoute()
         registerRoute()
         loginRoute()
         noteRoutes()
     }
-}
-
-suspend inline fun ApplicationCall.respondCss(builder: CSSBuilder.() -> Unit) {
-    respondText(CSSBuilder().apply(builder).toString(), ContentType.Text.CSS)
 }
 
 private fun Authentication.Configuration.configureAuth() {

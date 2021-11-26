@@ -18,7 +18,6 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.css.header
 
 fun Route.registerRoute() {
     route("/register") {
